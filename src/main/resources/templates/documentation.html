@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="author" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link th:href="@{/spxdoc-resources/offcanvas.css}" rel="stylesheet">
+
+</head>
+
+<body class="bg-light">
+
+<nav class="navbar navbar-expand-md fixed-top " style="background: #9abf00">
+    <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+            <li>
+                <select class="browser-default custom-select" id="service-classes" onchange="selectService()">
+                </select>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="background: green;">Search</button>
+        </form>
+    </div>
+</nav>
+
+<main role="main" class="container">
+    <div class="d-flex align-items-center p-3 my-3 text-white-50 rounded box-shadow" style="background: #0c123d">
+        <img class="mr-3" th:src="@{/spxdoc-resources/seepex.jpg}" alt="" width="48" height="48">
+        <div class="lh-100">
+            <h6 class="mb-0 text-white lh-100">Service Communication</h6>
+            <small>Documentation</small>
+        </div>
+    </div>
+
+    <div class="card-header" id="headingOne">
+        <h5 class="mb-0">
+            <div class="media text-muted pt-3">
+                <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
+                <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                    <strong class="d-block text-gray-dark float-left" id="class_name"></strong> <br/>
+                    <span id="class_description"></span>
+                </p>
+            </div>
+        </h5>
+    </div>
+
+    <div class="my-3 p-3 bg-white rounded box-shadow" id="method_container">
+
+    </div>
+
+</main>
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.9.7/holder.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
+
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    let processedIds = [];
+    
+    function getParamDescription(method) {
+        let html = "";
+
+        for(let i = 0; i < method.parameters.length; i++) {
+            let parameter = method.parameters[i];
+
+            html += '{ <br/>' + parameter.name + ' : ' + parameter.type + '<br/> } <br/>';
+        }
+
+        return html;
+    }
+
+    function getParameters(method) {
+        let html = "";
+
+        for(let i = 0; i < method.parameters.length; i++) {
+            let parameter = method.parameters[i];
+
+            html += '<tr><td>' + parameter.name + '</td><td>' + parameter.type + '</td></tr>';
+        }
+
+        return html;
+    }
+
+    function getMethodBox(clazz, method) {
+        let html = '<div id="accordion" style="padding-top: 10px">' +
+                        '<div class="card">' +
+                            '<div class="card-body" style="background: #eef3fb">' +
+                                '<span>' +
+                                    '<button class="btn btn-link" data-toggle="collapse" data-target="#' + method.name + '" aria-expanded="false" aria-controls="collapseOne">' +
+                                        '<span class="text-muted">' + method.returnValue.type + ' - ' + '</span>' +
+                                        '<span class="text-muted"><b>' +method.name + '</b></span>' +
+                                    '</button>' +
+                                    '<div class="text-muted" style="padding-left: 12px; font-size: 11px; color: #6c757d !important; font-style: italic;">' + method.description + '</div>'+
+                                    '<hr/>' +
+                                    '<div id="' + method.name + '" class="collapse" aria-labelledby="headingOne" data-parent="#accordion" style="margin-top: 40px; background: #fdfdfd">' +
+                                        '<div class="row">' +
+                                            '<div class="col-6">' +
+                                                '<div class="card-header">' +
+                                                    'Parameters' +
+                                                '</div>' +
+                                                '<div class="card-body">' +
+                                                    '<table class="table table-bordered">' +
+                                                        '<thead>' +
+                                                            '<tr><th>Name</th><th>Type</th></tr>' +
+                                                        '</thead>' +
+                                                        getParameters(method) +
+                                                    '</table>' +
+                                                '</div>' +
+                                            '</div>' +
+
+                                            '<div class="col-6">' +
+                                                '<div class="card-header">' +
+                                                    'Example request payload' +
+                                                '</div>' +
+                                                '<div class="card-body">' +
+                                                    '{ <br/>' +
+                                                        '"service_id" : "' + clazz.id + '", <br/>' +
+                                                        '"method": "' + method.name + '", <br/>' +
+                                                        '"params": [ <br/>' +
+                                                        getParamDescription(method) +
+                                                        '] <br/>' +
+                                                        '"requester" : "YourServiceName" <br/>' +
+                                                    '}' +
+                                                '</div>' +
+                                            '</div>' +
+                                        '</div>' +
+                                        '<div class="row">' +
+                                            '<div class="col-12">' +
+                                                '<div class="card-header">' +
+                                                    'Example response payload' +
+                                                '</div>' +
+                                                '<div class="card-body">' +
+                                                    '<p>' + method.returnValue.exampleJson.replace(new RegExp('\r?\n','g'), '<br />') + '</p>' +
+                                                '</div>' +
+                                            '</div>' +
+                                        '</div>' +
+                                        '<hr/>' +
+                                    '</div>' +
+                                '</span>' +
+                            '</div>' +
+                        '</div>';
+
+        return html;
+    }
+
+    
+    $(function(){
+        let paths = [[${paths}]];
+        let service = [[${service}]];
+        let responses = [];
+        let receivedResponses = 0;
+
+        for(let i = 0; i < paths.length ; i++) {
+            $.get(paths[i].path ,function(response) {
+                console.log(response);
+
+                receivedResponses += 1;
+                responses.push(response);
+
+                for(let k = 0; k < response.length; k++) {
+                    if(i === 0 && service === null) {
+                        let clazz = response[0];
+
+                        $('#class_name').text(clazz.name);
+                        $('#class_description').text(clazz.description);
+
+                        let html = "";
+                        for(let n = 0; n < clazz.methods.length; n++) {
+                            let method = clazz.methods[n];
+
+                            html += getMethodBox(clazz, method);
+                        }
+                        $('#method_container').html(html);
+                    } else if(service !== null && response[k].id === service) {
+                        $('#class_name').text(response[k].name);
+                        $('#class_description').text(response[k].description);
+
+                        let html = "";
+                        for(let n = 0; n < response[k].methods.length; n++) {
+                            let method = response[k].methods[n];
+
+                            html += getMethodBox(response[k], method);
+                        }
+                        $('#method_container').html(html);
+                    }
+                }
+
+                // build drop down
+                //if(receivedResponses === paths.length) {
+                    responses.sort();
+                    for(let m = 0; m < responses.length; m++) {
+                        let classes = responses[m];
+
+                        for(let x = 0; x < classes.length; x++) {
+                            let clazz = classes[x];
+                            let selected = "";
+
+                            if(processedIds.includes(clazz.id)) {
+                                continue;
+                            }
+
+                            if(clazz.id === service) {
+                                selected = "selected"
+                            }
+
+                            processedIds.push(clazz.id);
+
+                            $('#service-classes').append('<option ' + selected + ' value="' + clazz.id + '">' +  clazz.name + '</option>');
+
+                            var options = $("#service-classes option");                    // Collect options
+                            options.detach().sort(function(a,b) {               // Detach from select, then Sort
+                                var at = $(a).text();
+                                var bt = $(b).text();
+                                return (at > bt)?1:((at < bt)?-1:0);            // Tell the sort function how to order
+                            });
+                            options.appendTo("#service-classes");                          // Re-attach to select
+                        }
+
+                    }
+                //}
+            });
+        }
+
+
+    });
+
+    function selectService() {
+        let selected = $("#service-classes").val();
+        var url = window.location.href.split('?')[0];
+        window.location = url + "?service=" + selected;
+    }
+
+    /*]]>*/
+</script>

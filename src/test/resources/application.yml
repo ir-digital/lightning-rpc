@@ -1,0 +1,47 @@
+server:
+  port: 0
+  max-http-header-size: 10000000
+
+spring:
+  profiles:
+    active: integrationtest
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: scs-service-doc
+  redis:
+    # Use EmbeddedRedis ->
+    database: 10
+    timeout: 5000
+    host: localhost
+    port: 6370
+    readhost: localhost
+    readport: 6370
+    jedis:
+      pool:
+        max-active: 2000
+        max-idle: 2000
+        min-idle: 100
+
+#spx:
+#  com:
+#    rabbit:
+#      rpc:
+#        username: ##develop_spx_com_rabbit_rpc_username##
+#        password: ##develop_spx_com_rabbit_rpc_password##
+#        host: ##develop_spx_com_rabbit_rpc_host##
+#        port: ##develop_spx_com_rabbit_rpc_port##
+
+spx:
+  com:
+    rabbit:
+      rpc:
+        username: integrationtest
+        password: 47integ11
+        host: rpcdev.gcloud.spx
+        port: 5672
+
+
+provide-rpc: "true"
+register-routing: "true"
+gzip-payload: "true"
