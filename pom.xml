@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.irdigital</groupId>
+    <groupId>net.ir-digital</groupId>
     <artifactId>lightning-rpc</artifactId>
     <version>1.0.0-RELEASE</version>
     <packaging>jar</packaging>
@@ -28,7 +28,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <gmavenplus-plugin.version>1.5</gmavenplus-plugin.version>
-        <repo.server.url>https://nexus.seepex.com</repo.server.url>
+        <repo.server.url />
         <log4j2.version>2.15.0</log4j2.version>
     </properties>
 
